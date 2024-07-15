@@ -26,7 +26,6 @@ return function(glove)
 		["Speedrun"] = game:GetService("ReplicatedStorage").Speedrunhit,
 		["Mail"] = game:GetService("ReplicatedStorage").MailHit,
 		["Golden"] = game:GetService("ReplicatedStorage").GoldenHit,
-		["Cheeky"] = game:GetService("ReplicatedStorage").CheekyHit,
 		["Reaper"] = game:GetService("ReplicatedStorage").ReaperHit,
 		["Defense"] = game:GetService("ReplicatedStorage").DefenseHit,
 		["Killstreak"] = game:GetService("ReplicatedStorage").KSHit,

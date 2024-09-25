@@ -845,7 +845,7 @@ local map = {
 	},
 	{
 		Category = "Combat",
-		Services = {"Extend", "SlapAura", "NoCooldown", "GhostN", "GhostF", "CVisible", "AntiRagdoll", "Speed"}
+		Services = {"Extend", "AntiNull", "SlapAura", "NoCooldown", "GhostN", "GhostF", "CVisible", "AntiRagdoll", "Speed"}
 	},
 	{
 		Category = "Movement",

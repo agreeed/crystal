@@ -277,6 +277,27 @@ services.CVisible = {
 	end,
 	Stop = function() end
 }
+services.AntiNull = {
+	Type = "Toggle",
+	Name = "Anti Null",
+	Category = "Combat",
+	Enabled = false,
+	Config = {},
+	Start = function()
+		while true do
+			for i,v in pairs(workspace:GetChildren()) do
+				if v.Name ~= "Imp" then
+					continue
+				end
+				getHit(plr.leaderstats.Glove.Value):FireServer(v.Body, true)
+				pulse(v.Body.Position)
+			end
+
+			task.wait()
+		end
+	end,
+	Stop = function() end
+}
 services.SlapAura = {
 	Type = "Toggle",
 	Name = "Slap Aura",

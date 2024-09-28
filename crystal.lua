@@ -8,15 +8,17 @@ if game:GetService("CoreGui"):FindFirstChild("Crystal") then
 	game:GetService("CoreGui").Crystal:Destroy()
 end
 
-local tws = game:GetService("TweenService")
-local rs = game:GetService("ReplicatedStorage")
-local rns = game:GetService("RunService")
-local plr = game:GetService("Players").LocalPlayer
+local Workspace = game:GetService("Workspace")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Player = game:GetService("Players").LocalPlayer
 local getHit = loadstring(game:HttpGet("https://github.com/agreeed/crystal/raw/main/gloves.lua"))()
 
+local RemotesBan = {ReplicatedStorage.Ban, ReplicatedStorage.AdminGUI, ReplicatedStorage.WalkSpeedChanged}
 local bypass;
 bypass = hookmetamethod(game, "__namecall", function(method, ...) 
-	if getnamecallmethod() == "FireServer" and table.find({rs.Ban, rs.AdminGUI, rs.WalkSpeedChanged}, method) then
+	if getnamecallmethod() == "FireServer" and table.find(RemotesBan, method) then
 		return
 	end
 	return bypass(method, ...)
@@ -30,7 +32,7 @@ local function cassert(b, t)
 end
 
 local function getChar()
-	return plr.Character
+	return Player.Character
 end
 local function getRoot()
 	if not getChar() then
@@ -50,7 +52,7 @@ local function pulse(pos)
 	part.Transparency = 0
 	part.Anchored = true
 
-	tws:Create(part, TweenInfo.new(1), {Transparency = 1}):Play()
+	TweenService:Create(part, TweenInfo.new(1), {Transparency = 1}):Play()
 	task.delay(1, part.Destroy, part)
 end
 
@@ -65,7 +67,7 @@ services.SilentAntiVoid = {
 	Enabled = false,
 	Config = {},
 	Start = function()
-		local fld = workspace:FindFirstChild(" .bound") or Instance.new("Model", workspace)
+		local fld = Workspace:FindFirstChild(" .bound") or Instance.new("Model", Workspace)
 		fld.Name = " .bound"
 		fld:ClearAllChildren()
 		local iter = 40
@@ -90,7 +92,7 @@ services.SilentAntiVoid = {
 		end
 	end,
 	Stop = function()
-		workspace:FindFirstChild(" .bound"):Destroy()
+		Workspace:FindFirstChild(" .bound"):Destroy()
 	end
 }
 services.AntiDeathBarrier = {
@@ -100,20 +102,20 @@ services.AntiDeathBarrier = {
 	Enabled = false,
 	Config = {},
 	Start = function()
-		workspace.AntiDefaultArena.CanTouch = false
-		workspace.DEATHBARRIER.CanTouch = false
-		workspace.DEATHBARRIER2.CanTouch = false
-		for i, v in workspace.DEATHBARRIER:GetChildren() do
+		Workspace.AntiDefaultArena.CanTouch = false
+		Workspace.DEATHBARRIER.CanTouch = false
+		Workspace.DEATHBARRIER2.CanTouch = false
+		for i, v in Workspace.DEATHBARRIER:GetChildren() do
 			if v.Name == "Block" then
 				v.CanTouch = false
 			end
 		end
 	end,
 	Stop = function()
-		workspace.AntiDefaultArena.CanTouch = true
-		workspace.DEATHBARRIER.CanTouch = true
-		workspace.DEATHBARRIER2.CanTouch = true
-		for i, v in workspace.DEATHBARRIER:GetChildren() do
+		Workspace.AntiDefaultArena.CanTouch = true
+		Workspace.DEATHBARRIER.CanTouch = true
+		Workspace.DEATHBARRIER2.CanTouch = true
+		for i, v in Workspace.DEATHBARRIER:GetChildren() do
 			if v.Name == "Block" then
 				v.CanTouch = true
 			end
@@ -127,14 +129,14 @@ services.AntiVoid = {
 	Enabled = false,
 	Config = {},
 	Start = function()
-		workspace.dedBarrier.Transparency = 0.5
-		workspace.dedBarrier.CanTouch = false
-		workspace.dedBarrier.CanCollide = true
+		Workspace.dedBarrier.Transparency = 0.5
+		Workspace.dedBarrier.CanTouch = false
+		Workspace.dedBarrier.CanCollide = true
 	end,
 	Stop = function()
-		workspace.dedBarrier.Transparency = 1
-		workspace.dedBarrier.CanTouch = true
-		workspace.dedBarrier.CanCollide = false
+		Workspace.dedBarrier.Transparency = 1
+		Workspace.dedBarrier.CanTouch = true
+		Workspace.dedBarrier.CanCollide = false
 	end
 }
 services.RemoveColorCorrection = {
@@ -157,7 +159,7 @@ services.Null = {
 	Category = "Abilities",
 	Config = {},
 	Activate = function()
-		rs.NullAbility:FireServer()
+		ReplicatedStorage.NullAbility:FireServer()
 	end
 }
 services.NullSpam = {
@@ -168,7 +170,7 @@ services.NullSpam = {
 	Config = {},
 	Start = function()
 		while task.wait(0.5) do
-			rs.NullAbility:FireServer()
+			ReplicatedStorage.NullAbility:FireServer()
 		end
 	end,
 	Stop = function() end
@@ -179,7 +181,7 @@ services.RhythmAOE = {
 	Category = "Abilities",
 	Config = {},
 	Activate = function()
-		rs.rhythmevent:FireServer("AoeExplosion", 86)
+		ReplicatedStorage.rhythmevent:FireServer("AoeExplosion", 86)
 	end
 }
 services.RhythmSpam = {
@@ -190,7 +192,7 @@ services.RhythmSpam = {
 	Config = {},
 	Start = function()
 		while task.wait(0.5) do
-			rs.rhythmevent:FireServer("AoeExplosion", 86)
+			ReplicatedStorage.rhythmevent:FireServer("AoeExplosion", 86)
 		end
 	end,
 	Stop = function() end
@@ -201,9 +203,9 @@ services.Retro = {
 	Category = "Abilities",
 	Config = {},
 	Activate = function()
-		rs.RetroAbility:FireServer("Rocket Launcher")
-		rs.RetroAbility:FireServer("Ban Hammer")
-		rs.RetroAbility:FireServer("Bomb")
+		ReplicatedStorage.RetroAbility:FireServer("Rocket Launcher")
+		ReplicatedStorage.RetroAbility:FireServer("Ban Hammer")
+		ReplicatedStorage.RetroAbility:FireServer("Bomb")
 	end
 }
 services.RetroSpam = {
@@ -214,9 +216,9 @@ services.RetroSpam = {
 	Config = {},
 	Start = function()
 		while task.wait(0.5) do
-			rs.RetroAbility:FireServer("Rocket Launcher")
-			rs.RetroAbility:FireServer("Ban Hammer")
-			rs.RetroAbility:FireServer("Bomb")
+			ReplicatedStorage.RetroAbility:FireServer("Rocket Launcher")
+			ReplicatedStorage.RetroAbility:FireServer("Ban Hammer")
+			ReplicatedStorage.RetroAbility:FireServer("Bomb")
 		end
 	end,
 	Stop = function() end
@@ -228,7 +230,7 @@ services.Extend = {
 	Category = "Combat",
 	Config = {},
 	Activate = function()
-		local tool = getChar():FindFirstChildOfClass("Tool") or plr.Backpack:FindFirstChildOfClass("Tool")
+		local tool = getChar():FindFirstChildOfClass("Tool") or Player.Backpack:FindFirstChildOfClass("Tool")
 		if not tool then
 			return
 		end
@@ -242,7 +244,7 @@ services.GhostN = {
 	Category = "Combat",
 	Config = {},
 	Activate = function()
-		rs.Ghostinvisibilityactivated:FireServer()
+		ReplicatedStorage.Ghostinvisibilityactivated:FireServer()
 	end
 }
 services.GhostF = {
@@ -251,7 +253,7 @@ services.GhostF = {
 	Category = "Combat",
 	Config = {},
 	Activate = function()
-		rs.Ghostinvisibilitydeactivated:FireServer()
+		ReplicatedStorage.Ghostinvisibilitydeactivated:FireServer()
 	end
 }
 services.CVisible = {
@@ -285,11 +287,11 @@ services.AntiNull = {
 	Config = {},
 	Start = function()
 		while true do
-			for i,v in pairs(workspace:GetChildren()) do
+			for i,v in pairs(Workspace:GetChildren()) do
 				if v.Name ~= "Imp" then
 					continue
 				end
-				getHit(plr.leaderstats.Glove.Value):FireServer(v.Body, true)
+				getHit(Player.leaderstats.Glove.Value):FireServer(v.Body, true)
 				pulse(v.Body.Position)
 			end
 
@@ -309,7 +311,7 @@ services.SlapAura = {
 	Start = function()
 		while true do
 			for i,v in pairs(game.Players:GetChildren()) do
-				if v == plr or not getChar():FindFirstChild("HumanoidRootPart") or not v.Character then
+				if v == Player or not getChar():FindFirstChild("HumanoidRootPart") or not v.Character then
 					continue
 				end
 				
@@ -329,7 +331,7 @@ services.SlapAura = {
 
 				Magnitude = (getChar().Torso.Position - v.Character.Torso.Position).Magnitude
 				if Magnitude < services.SlapAura.Config.MaxDistance.Value then
-					getHit(plr.leaderstats.Glove.Value):FireServer(hrp, true)
+					getHit(Player.leaderstats.Glove.Value):FireServer(hrp, true)
 					pulse(hrp.Position)
 					
 					local cd = 0.45 + math.abs(math.sin(os.clock() * 0.3)) * 0.25
@@ -353,7 +355,7 @@ services.NoCooldown = {
 			local char = getChar()
 			task.wait()
 
-			local ls = (char:FindFirstChildOfClass("Tool") or plr.Backpack:FindFirstChildOfClass("Tool")):FindFirstChildOfClass("LocalScript")
+			local ls = (char:FindFirstChildOfClass("Tool") or Player.Backpack:FindFirstChildOfClass("Tool")):FindFirstChildOfClass("LocalScript")
 			ls.Enabled = false
 			ls.Enabled = true
 		end
@@ -362,7 +364,7 @@ services.NoCooldown = {
 			local char = getChar()
 
 			if char then
-				local tool = char:FindFirstChildOfClass("Tool") or plr.Backpack:FindFirstChildOfClass("Tool")
+				local tool = char:FindFirstChildOfClass("Tool") or Player.Backpack:FindFirstChildOfClass("Tool")
 				tool.Activated:Connect(bind)
 				tool.Destroying:Wait()
 			end
@@ -413,7 +415,7 @@ services.AntiRagdoll = {
 			bp.P = 10000
 			bp.Position = hrp.Position
 
-			while task.wait() and char.Parent == workspace do
+			while task.wait() and char.Parent == Workspace do
 				local supragdoll = hum:GetState() == Enum.HumanoidStateType.PlatformStanding or
 									hum:GetState() == Enum.HumanoidStateType.FallingDown
 				
@@ -476,7 +478,7 @@ services.TPPlate = {
 	Category = "Movement",
 	Config = {},
 	Activate = function()
-		getChar():PivotTo(workspace.Arena.Plate.CFrame + Vector3.yAxis * 3)
+		getChar():PivotTo(Workspace.Arena.Plate.CFrame + Vector3.yAxis * 3)
 	end
 }
 services.TPPortal = {
@@ -485,7 +487,7 @@ services.TPPortal = {
 	Category = "Movement",
 	Config = {},
 	Activate = function()
-		getChar():PivotTo(workspace.Lobby.Teleport1.CFrame)
+		getChar():PivotTo(Workspace.Lobby.Teleport1.CFrame)
 	end
 }
 services.SafeSpot1 = {
@@ -563,10 +565,10 @@ services.MegarockBypass = {
 			end
 		end
 
-		local cb = workspace.DescendantAdded:Connet(react)
+		local cb = Workspace.DescendantAdded:Connet(react)
 		table.insert(services.MegarockBypass.CallBacks, cb)
 
-		for i, v in workspace:GetDescendants() do
+		for i, v in Workspace:GetDescendants() do
 			react(v)
 		end
 	end,
@@ -585,7 +587,7 @@ services.ObbyBypass = {
 	Config = {},
 	CallBacks = {},
 	Start = function()
-		local cb = workspace.ChildAdded:Connet(function(dc)
+		local cb = Workspace.ChildAdded:Connet(function(dc)
 			if dc.Name:sub(0, 8) == "ObbyPart" then
 				dc.CanTouch = false
 				local cc = dc:GetPropertyChangedSignal("CanTouch"):Connect(function()
@@ -624,10 +626,10 @@ services.RobBypass = {
 			end
 		end
 
-		local cb = workspace.ChildAdded:Connect(react)
+		local cb = Workspace.ChildAdded:Connect(react)
 		table.insert(services.RobBypass.CallBacks, cb)
 
-		for i, v in workspace:GetChildren() do
+		for i, v in Workspace:GetChildren() do
 			react(v)
 		end
 	end,
@@ -656,10 +658,10 @@ services.BobBypass = {
 			end
 		end
         
-		local cb = workspace.ChildAdded:Connect(react)
+		local cb = Workspace.ChildAdded:Connect(react)
 		table.insert(services.BobBypass.CallBacks, cb)
 
-		for i, v in workspace:GetChildren() do
+		for i, v in Workspace:GetChildren() do
 			react(v)
 		end
 	end,
@@ -702,20 +704,20 @@ services.Slapples = {
 	Config = {},
 	Start = function()
 		while task.wait(0.1) do
-			for i, v in workspace.Arena.island5.Slapples:GetChildren() do
+			for i, v in Workspace.Arena.island5.Slapples:GetChildren() do
 				local char = getChar()
 				if not char then
 					continue
 				end
 
 				if char:FindFirstChild("InLobby") then
-					char:PivotTo(workspace.Lobby.Teleport1.CFrame)
+					char:PivotTo(Workspace.Lobby.Teleport1.CFrame)
 					char.InLobby.Destroying:Wait()
 				end
 
 				if v.Glove.Transparency == 0 then
 					char:PivotTo(v:GetPivot())
-					rns.Heartbeat:Wait()
+					RunService.Heartbeat:Wait()
 				end
 			end
 		end
@@ -728,7 +730,7 @@ services.AdminGlove = {
 	Category = "Farm",
 	Config = {},
 	Activate = function()
-		rs.RetroTP:FireServer()
+		ReplicatedStorage.RetroTP:FireServer()
 	end
 }
 services.TycoonFarm = {
@@ -745,11 +747,11 @@ services.TycoonFarm = {
 			end
 
 			if char:FindFirstChild("InLobby") then
-				char:PivotTo(workspace.Lobby.Teleport1.CFrame)
+				char:PivotTo(Workspace.Lobby.Teleport1.CFrame)
 				continue
 			end
 
-			char:PivotTo(workspace.Arena.Plate.CFrame + Vector3.yAxis * -2)
+			char:PivotTo(Workspace.Arena.Plate.CFrame + Vector3.yAxis * -2)
 			getRoot().AssemblyLinearVelocity = Vector3.yAxis * -100
 		end
 	end,
@@ -762,7 +764,7 @@ services.FishFarm = {
 	Enabled = false,
 	Config = {},
 	Start = function()
-		if plr.leaderstats.Glove.Value ~= "ZZZZZZZ" and plr.leaderstats.Glove.Value ~= "Ghost" then
+		if Player.leaderstats.Glove.Value ~= "ZZZZZZZ" and Player.leaderstats.Glove.Value ~= "Ghost" then
 			services.FishFarm.Enabled = false
 			return
 		end
@@ -792,14 +794,14 @@ services.BobFarm = {
 	Config = {},
 	CallBacks = {},
 	Start = function()
-		if plr.leaderstats.Glove.Value ~= "Replica" then
+		if Player.leaderstats.Glove.Value ~= "Replica" then
 			services.BobFarm.Enabled = false
 			return
 		end
 
 		local function farm(char)
 			task.wait(0.5)
-			if char.Parent ~= workspace then
+			if char.Parent ~= Workspace then
 				return
 			end
 
@@ -817,13 +819,13 @@ services.BobFarm = {
 			end
 
 			task.wait(0.5)
-			rs.Duplicate:FireServer() -- Ability
+			ReplicatedStorage.Duplicate:FireServer() -- Ability
 			task.wait(0.5)
 
 			humanoid:ChangeState(Enum.HumanoidStateType.Dead)
 		end
 
-		table.insert(services.BobFarm.CallBacks, plr.CharacterAdded:Connect(farm))
+		table.insert(services.BobFarm.CallBacks, Player.CharacterAdded:Connect(farm))
 		farm(getChar())
 	end,
 	Stop = function()
@@ -904,7 +906,7 @@ end
 local rainbowGradients = {}
 -- i am sorry for this mess, but im also not going to stretch the ui section to hundreds of lines of code
 local gui = new("ScreenGui", game:GetService("CoreGui"), {Name = "Crystal", DisplayOrder = 500, IgnoreGuiInset = true, ResetOnSpawn = false})
-viewport = new("ViewportFrame", gui, {Name = "MainViewport", BackgroundTransparency = 1, CurrentCamera = workspace.CurrentCamera, Size = UDim2.fromScale(1, 1)})
+viewport = new("ViewportFrame", gui, {Name = "MainViewport", BackgroundTransparency = 1, CurrentCamera = Workspace.CurrentCamera, Size = UDim2.fromScale(1, 1)})
 local canvas = new("CanvasGroup", gui, {Name = "Canvas", BackgroundTransparency = 1, GroupTransparency = 0, Size = UDim2.fromScale(1, 1), Visible = true})
 local scale = new("UIScale", canvas, {})
 
@@ -1040,8 +1042,8 @@ end
 
 
 -- UI Functionality
-local sw = workspace.CurrentCamera.ViewportSize.X
-local sh = workspace.CurrentCamera.ViewportSize.Y
+local sw = Workspace.CurrentCamera.ViewportSize.X
+local sh = Workspace.CurrentCamera.ViewportSize.Y
 
 cassert(sw > 100, "The screen width (100>".. tostring(sw).. ") is too low and Crystal cannot work with it correctly.")
 cassert(sh > 100, "The screen height (100>".. tostring(sh).. ") is too low and Crystal cannot work with it correctly.")
@@ -1153,7 +1155,7 @@ ine = game:GetService('UserInputService').InputBegan:Connect(function(input, gme
 					local x, y = offScreen()
 					v.Position = UDim2.fromOffset(x * sw, y * sh)
 		
-					tws:Create(
+					TweenService:Create(
 						v,
 						TweenInfo.new(0.3),
 						{Position = pc[v.Name]}
@@ -1164,14 +1166,14 @@ ine = game:GetService('UserInputService').InputBegan:Connect(function(input, gme
 			local x, y = offScreen()
 			setui.Position = UDim2.fromScale(x, y)
 			
-			tws:Create(
+			TweenService:Create(
 				setui,
 				TweenInfo.new(0.3),
 				{Position = UDim2.fromScale(0.5, 0.5)}
 			):Play()
 
 			for i, v in {uib1, uib2, scbox} do
-				tws:Create(
+				TweenService:Create(
 					v,
 					TweenInfo.new(0.3),
 					{Position = UDim2.new(
@@ -1190,7 +1192,7 @@ ine = game:GetService('UserInputService').InputBegan:Connect(function(input, gme
 					local x, y = offScreen()
 					v.Position = pc[v.Name]
 		
-					tws:Create(
+					TweenService:Create(
 						v,
 						TweenInfo.new(0.3),
 						{Position = UDim2.fromScale(x, y)}
@@ -1201,7 +1203,7 @@ ine = game:GetService('UserInputService').InputBegan:Connect(function(input, gme
 			local x, y = offScreen()
 			setui.Position = UDim2.fromScale(0.5, 0.5)
 			
-			tws:Create(
+			TweenService:Create(
 				setui,
 				TweenInfo.new(0.3),
 				{Position = UDim2.fromScale(x, y)}
@@ -1210,7 +1212,7 @@ ine = game:GetService('UserInputService').InputBegan:Connect(function(input, gme
 			layout.Parent = nil
 
 			for i, v in {uib1, uib2, scbox} do
-				tws:Create(
+				TweenService:Create(
 					v,
 					TweenInfo.new(0.3),
 					{Position = UDim2.new(
@@ -1225,12 +1227,12 @@ ine = game:GetService('UserInputService').InputBegan:Connect(function(input, gme
 			return
 		end
 		
-		tws:Create(
+		TweenService:Create(
 			holder,
 			TweenInfo.new(0.3),
 			{BackgroundTransparency = tt}
 		):Play()
-		tws:Create(
+		TweenService:Create(
 			settings,
 			TweenInfo.new(0.3),
 			{BackgroundTransparency = tt}
@@ -1245,7 +1247,7 @@ ine = game:GetService('UserInputService').InputBegan:Connect(function(input, gme
 	end
 end)
 
-rnss = rns.RenderStepped:Connect(function()
+rnss = RunService.RenderStepped:Connect(function()
 	if not gui.Parent then
 		ine:Disconnect()
 		rnss:Disconnect()
